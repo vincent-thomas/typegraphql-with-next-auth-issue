@@ -1,5 +1,5 @@
 on:
-  push
+  push:
 
 
 jobs:
@@ -13,7 +13,7 @@ jobs:
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
-      - name: Cache Primes
+      - name: Cache
         id: cache-primes
         uses: actions/cache@v3
         with:

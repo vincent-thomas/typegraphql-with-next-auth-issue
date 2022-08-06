@@ -3,25 +3,49 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "develop": "run-p develop:run develop:generate:watch",
+    "develop:run": "next dev",
+    "develop:generate": "graphql-codegen",
+    "develop:generate:watch": "graphql-codegen --watch",
     "build": "next build --no-lint",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "vitest"
   },
   "dependencies": {
+    "@tanstack/react-query": "^4.0.10",
+    "apollo-server-micro": "^3.10.0",
+    "graphql": "^15.3.0",
+    "graphql-request": "^4.3.0",
+    "graphql-tag": "^2.12.6",
+    "micro": "^9.4.1",
     "next": "12.2.4",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "reflect-metadata": "^0.1.13",
+    "type-graphql": "^1.1.1"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.11.3",
+    "@graphql-codegen/typescript": "^2.7.2",
+    "@graphql-codegen/typescript-graphql-request": "^4.5.2",
+    "@graphql-codegen/typescript-operations": "^2.5.2",
     "@types/node": "18.6.4",
+    "@types/prettier": "^2",
     "@types/react": "18.0.15",
     "@types/react-dom": "18.0.6",
     "@yarnpkg/sdks": "^3.0.0-rc.14",
     "eslint": "8.21.0",
     "eslint-config-next": "12.2.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.1",
-    "typescript": "4.7.4"
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.7.1",
+    "tslib": "^2.4.0",
+    "typescript": "4.7.4",
+    "vite": "^3.0.4",
+    "vitest": "^0.21.0"
   },
   "packageManager": "yarn@3.2.2"
 }
