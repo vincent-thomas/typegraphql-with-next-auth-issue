@@ -1,14 +1,18 @@
 name: Build Web-App
 
-on: push
+on:
+  push:
+    branches:
+      - trunk
 
 concurrency:
   cancel-in-progress: true
   group: build-app
 
 jobs:
-  build:
+  build_and_test:
     runs-on: ubuntu-latest
+    name: Build and Test
     strategy:
       fail-fast: true
       matrix:
@@ -47,5 +51,35 @@ jobs:
           key: ${{ runner.os }}-nextjs-output
           restore-keys: ${{ runner.os }}-nextjs-output
 
-      - name: Build
+      - name: ${{ matrix.action }}
         run: yarn ${{ matrix.action }}
+
+      - uses: actions/upload-artifact@v3
+        if: ${{ matrix.action == 'build' }}
+        with:
+          name: app-output
+          path: .next
+
+  deploy:
+    needs:
+      - build_and_test
+    runs-on: ubuntu-latest
+    name: Deploy from Artifacts
+    steps:
+      - uses: actions/checkout@v2.1.0
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - uses: actions/download-artifact@v3
+        with:
+          name: app-output
+          path: .next
+      - uses: amondnet/vercel-action@v20 #deploy
+        with:
+          vercel-token: ${{ secrets.VERCEL_SECRET }} # Required
+          zeit-token: ${{ secrets.VERCEL_SECRET }}
+          github-token: ${{ secrets.GITHUB_TOKEN }} #Optional
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }} #Required
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }} #Required
+          vercel-args: "--prod"
