@@ -14,10 +14,12 @@
 # production
 /build
 
-
-.yarn/**
-!.yarn/plugins
+.yarn/*
+!.yarn/patches
 !.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
 
 # misc
 .DS_Store
