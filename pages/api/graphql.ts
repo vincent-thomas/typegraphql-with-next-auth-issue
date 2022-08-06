@@ -6,16 +6,17 @@ import { DogResolver } from "@backend/resolvers/dog";
 
 export const config = {
   api: {
-    bodyParser: false,
-  },
+    bodyParser: false
+  }
 };
 
 const schema = await buildSchema({
-  resolvers: [DogResolver],
+  resolvers: [DogResolver]
 });
 
 const server = new ApolloServer({
   schema,
+  persistedQueries: false
 });
 
 const startServer = server.start();

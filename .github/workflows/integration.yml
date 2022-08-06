@@ -39,7 +39,7 @@ jobs:
 
       - name: Install Deps
         if: ${{ steps.yarn-cache.outputs.cache-hit != 'true' && steps.yarn-unplugged.outputs.cache-hit != 'true' }}
-        run: yarn
+        run: yarn --immutable --immutable-cache --check-cache
 
       - name: Cache
         if: ${{ matrix.action == 'build' }}

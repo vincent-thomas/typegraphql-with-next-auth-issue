@@ -1,10 +1,9 @@
-import "../../styles/globals.css";
 import type { AppProps } from "next/app";
 import { Hydrate, QueryClientProvider } from "@tanstack/react-query";
+import "windi.css";
+import { queryClient } from "@graphql/client";
 
-import { queryClient } from "../graphql/client";
-
-function MyApp({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
@@ -14,4 +13,4 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+export default App;

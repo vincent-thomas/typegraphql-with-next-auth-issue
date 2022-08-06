@@ -1,0 +1,6 @@
+query getDog($id: Float!) {
+  dog(id: $id) {
+    name
+    age
+  }
+}

@@ -1,8 +1,11 @@
-import { Field, ObjectType, ID, Int } from "type-graphql";
+import { Field, ObjectType, Float, Int } from "type-graphql";
 
 @ObjectType()
 export class DogObject {
-  @Field(() => ID)
+  @Field(() => Float)
+  id: number;
+
+  @Field(() => String)
   name: string;
 
   @Field(() => Int)
