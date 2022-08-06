@@ -1,27 +1,54 @@
-on:
-  push:
+name: Build Web-App
 
+on:
+  push
+
+concurrency:
+ cancel-in-progress: true
+ group: build-app
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        action: ["build", "test"]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
       - name: Cache
-        id: cache-primes
+        id: yarn-cache
         uses: actions/cache@v3
         with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          path: .yarn/cache
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn
+
+      - name: Cache
+        id: yarn-unplugged
+        uses: actions/cache@v3
+        with:
+          path: .yarn/unplugged
+          key: ${{ runner.os }}-yarn-unplugged-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-unplugged
+
+
+
       - name: Install Deps
-        if: "${{ steps.yarn-cache.outputs.cache-hit != 'true' }}"
+        if: ${{ steps.yarn-cache.outputs.cache-hit != 'true' && steps.yarn-unplugged.outputs.cache-hit != 'true' }}
         run: yarn
+
+      - name: Cache
+        if: ${{ matrix.action == 'build' }}
+        id: next-cache
+        uses: actions/cache@v3
+        with:
+          path: .next/cache
+          key: ${{ runner.os }}-nextjs-output
+          restore-keys: ${{ runner.os }}-nextjs-output
+
       - name: Build
-        run: yarn build
+        run: yarn ${{ matrix.action }}
