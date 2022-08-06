@@ -1,11 +1,10 @@
 name: Build Web-App
 
-on:
-  push
+on: push
 
 concurrency:
- cancel-in-progress: true
- group: build-app
+  cancel-in-progress: true
+  group: build-app
 
 jobs:
   build:
@@ -35,11 +34,9 @@ jobs:
           key: ${{ runner.os }}-yarn-unplugged-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-unplugged
 
-
-
       - name: Install Deps
         if: ${{ steps.yarn-cache.outputs.cache-hit != 'true' && steps.yarn-unplugged.outputs.cache-hit != 'true' }}
-        run: yarn --immutable --immutable-cache --check-cache
+        run: yarn --immutable --check-cache
 
       - name: Cache
         if: ${{ matrix.action == 'build' }}
