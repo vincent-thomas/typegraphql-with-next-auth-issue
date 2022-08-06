@@ -3,7 +3,7 @@ import { QueryClient } from "@tanstack/react-query";
 
 import { getSdk } from "@graphql/generated";
 
-const gplClient = new GraphQLClient("http://localhost:3000/api/graphql");
+const gplClient = new GraphQLClient(`/api/graphql`);
 export const { getDogs, getDog } = getSdk(gplClient);
 
 export const queryClient = new QueryClient({
