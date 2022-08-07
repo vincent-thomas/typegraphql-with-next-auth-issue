@@ -18,7 +18,8 @@ export type Scalars = {
 export type DogObject = {
   __typename?: 'DogObject';
   age: Scalars['Int'];
-  id: Scalars['Float'];
+  gender: Scalars['String'];
+  id: Scalars['Int'];
   name: Scalars['String'];
 };
 
@@ -26,11 +27,26 @@ export type Query = {
   __typename?: 'Query';
   dog?: Maybe<DogObject>;
   dogs: Array<DogObject>;
+  user?: Maybe<UserObject>;
+  users: Array<UserObject>;
 };
 
 
 export type QueryDogArgs = {
   id: Scalars['Float'];
+};
+
+
+export type QueryUserArgs = {
+  id: Scalars['Float'];
+};
+
+export type UserObject = {
+  __typename?: 'UserObject';
+  age: Scalars['Int'];
+  gender: Scalars['String'];
+  id: Scalars['Int'];
+  name: Scalars['String'];
 };
 
 export type GetDogQueryVariables = Exact<{
@@ -44,6 +60,18 @@ export type GetDogsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetDogsQuery = { __typename?: 'Query', dogs: Array<{ __typename?: 'DogObject', id: number, age: number, name: string }> };
+
+export type GetUserQueryVariables = Exact<{
+  id: Scalars['Float'];
+}>;
+
+
+export type GetUserQuery = { __typename?: 'Query', user?: { __typename?: 'UserObject', age: number, name: string } | null };
+
+export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'UserObject', age: number, name: string }> };
 
 
 export const GetDogDocument = gql`
@@ -63,6 +91,22 @@ export const GetDogsDocument = gql`
   }
 }
     `;
+export const GetUserDocument = gql`
+    query getUser($id: Float!) {
+  user(id: $id) {
+    age
+    name
+  }
+}
+    `;
+export const GetUsersDocument = gql`
+    query getUsers {
+  users {
+    age
+    name
+  }
+}
+    `;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
 
@@ -76,6 +120,12 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getDogs(variables?: GetDogsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetDogsQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetDogsQuery>(GetDogsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getDogs', 'query');
+    },
+    getUser(variables: GetUserQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetUserQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetUserQuery>(GetUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUser', 'query');
+    },
+    getUsers(variables?: GetUsersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetUsersQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetUsersQuery>(GetUsersDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUsers', 'query');
     }
   };
 }

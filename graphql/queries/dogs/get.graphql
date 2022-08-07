@@ -4,3 +4,11 @@ query getDog($id: Float!) {
     age
   }
 }
+
+query getDogs {
+  dogs {
+    id
+    age
+    name
+  }
+}

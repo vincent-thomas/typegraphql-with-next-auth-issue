@@ -1,0 +1,8 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: next.js-overkill-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./db/data:/var/lib/mysql

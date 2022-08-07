@@ -2,7 +2,8 @@ import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import { ApolloServer } from "apollo-server-micro";
 import { NextApiHandler } from "next";
-import { DogResolver } from "@backend/resolvers/dog";
+import { DogResolver } from "@backend/resolvers/dog/resolver";
+import { UserResolver } from "@backend/resolvers/user/resolver";
 
 export const config = {
   api: {
@@ -10,13 +11,12 @@ export const config = {
   }
 };
 
-const schema = await buildSchema({
-  resolvers: [DogResolver]
-});
-
 const server = new ApolloServer({
-  schema,
-  persistedQueries: false
+  schema: await buildSchema({
+    resolvers: [DogResolver, UserResolver]
+  }),
+  persistedQueries: false,
+  allowBatchedHttpRequests: true
 });
 
 const startServer = server.start();

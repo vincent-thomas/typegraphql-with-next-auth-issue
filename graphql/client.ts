@@ -4,7 +4,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { getSdk } from "@graphql/generated";
 
 const gplClient = new GraphQLClient(`/api/graphql`);
-export const { getDogs, getDog } = getSdk(gplClient);
+export const gplQueries = getSdk(gplClient);
 
 export const queryClient = new QueryClient({
   defaultOptions: {

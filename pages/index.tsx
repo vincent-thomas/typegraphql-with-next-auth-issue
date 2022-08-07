@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { getDogs } from "@graphql/client";
+import { gplQueries } from "@graphql/client";
 
 export default function Test() {
-  const { data } = useQuery(["getDogs"], () => getDogs());
+  const { data } = useQuery(["getDogs"], () => gplQueries.getDogs());
 
   return (
     <>

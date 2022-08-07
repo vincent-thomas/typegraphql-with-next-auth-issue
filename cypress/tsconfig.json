@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.json",
+  "include": ["./**/*.cy.ts", "./support/e2e.ts"],
+  "exclude": [],
+  "compilerOptions": {
+    "isolatedModules": false,
+    "types": ["mocha"]
+  }
+}

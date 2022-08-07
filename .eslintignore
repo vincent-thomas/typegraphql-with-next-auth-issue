@@ -1,1 +1,2 @@
-graphql/client.ts
+graphql/generated.ts
+lib/**/*

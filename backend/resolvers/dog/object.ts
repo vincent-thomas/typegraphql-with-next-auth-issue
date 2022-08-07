@@ -2,7 +2,7 @@ import { Field, ObjectType, Float, Int } from "type-graphql";
 
 @ObjectType()
 export class DogObject {
-  @Field(() => Float)
+  @Field(() => Int)
   id: number;
 
   @Field(() => String)
@@ -10,4 +10,7 @@ export class DogObject {
 
   @Field(() => Int)
   age: number;
+
+  @Field(() => String)
+  gender: "male" | "female";
 }
