@@ -49,6 +49,11 @@ export type UserObject = {
   name: Scalars['String'];
 };
 
+export type GetAuthUserQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAuthUserQuery = { __typename?: 'Query', users: Array<{ __typename?: 'UserObject', id: number }> };
+
 export type GetDogQueryVariables = Exact<{
   id: Scalars['Float'];
 }>;
@@ -74,6 +79,13 @@ export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetUsersQuery = { __typename?: 'Query', users: Array<{ __typename?: 'UserObject', age: number, name: string }> };
 
 
+export const GetAuthUserDocument = gql`
+    query getAuthUser {
+  users {
+    id
+  }
+}
+    `;
 export const GetDogDocument = gql`
     query getDog($id: Float!) {
   dog(id: $id) {
@@ -115,6 +127,9 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    getAuthUser(variables?: GetAuthUserQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetAuthUserQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAuthUserQuery>(GetAuthUserDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAuthUser', 'query');
+    },
     getDog(variables: GetDogQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<GetDogQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetDogQuery>(GetDogDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getDog', 'query');
     },

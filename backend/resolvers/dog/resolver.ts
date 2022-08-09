@@ -1,7 +1,11 @@
 import { DogObject } from "@backend/resolvers/dog/object";
-import { Query, Resolver, Arg, UseMiddleware } from "type-graphql";
+import { Query, Resolver, Arg, Ctx } from "type-graphql";
 
 import type { Maybe } from "type-graphql";
+import type { IGraphqlContext } from "interfaces/graphql-context";
+import { unstable_getServerSession } from "next-auth";
+import { NextAuthConfig } from "config/next-auth";
+import { getToken } from "next-auth/jwt";
 
 const dogs: DogObject[] = [
   {
@@ -21,7 +25,9 @@ const dogs: DogObject[] = [
 @Resolver(DogObject)
 export class DogResolver {
   @Query(() => [DogObject])
-  dogs(): DogObject[] {
+  async dogs(@Ctx() { req }: IGraphqlContext): Promise<DogObject[]> {
+    const user = await getToken({ req });
+    console.log("USER", user);
     return dogs;
   }
 
